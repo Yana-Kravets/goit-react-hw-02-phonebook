@@ -16,7 +16,7 @@ export class App extends Component {
   handleChange = e => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
-  };
+  }; 
 
   handleSubmit = data => {
     const { name, number } = data;
@@ -25,18 +25,22 @@ export class App extends Component {
       name: name,
       number: number,
     };
-    this.setState(({ contacts }) =>
-      contacts.find(
-        contact =>
-          contact.name === newContact.name ||
-          contact.number === newContact.number
-      )
-        ? alert(
-            `${ newContact.name} or ${newContact.number} is already in contacts`
-          )
-        : { contacts: [newContact, ...contacts] }
+  
+    const isExist = this.state.contacts.find(
+      contact =>
+        contact.name.toLowerCase() === newContact.name.toLowerCase() ||
+        contact.number === newContact.number
     );
-  };  
+  
+    if (isExist) {
+      alert(
+        `${newContact.name} or ${newContact.number} is already in contacts`
+      );
+    } else {
+      this.setState({ contacts: [newContact, ...this.state.contacts] });
+    }
+  };
+
 
   handleDelete = e => {
     this.setState(prevState => ({
